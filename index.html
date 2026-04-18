@@ -7,15 +7,22 @@
 <title>Abhishek weds Shipra · Wedding Invitation · 5 May 2026</title>
 <meta name="description" content="You are cordially invited to the wedding of Abhishek & Shipra on Tuesday, 5th May 2026 at AKM Resorts, Zirakpur. With blessings from the Modi family." />
 
-<!-- ============ SOCIAL PREVIEW (Open Graph) ============ -->
-<!-- IMPORTANT: After deploying, replace the URL below with YOUR actual GitHub Pages link
-     e.g. https://yourusername.github.io/wedding-invitation/ -->
+<!-- ============================================================
+     🔴 IMPORTANT: REPLACE THE URL BELOW WITH YOUR GITHUB PAGES LINK
+     Example: https://ankit-modi.github.io/wedding-invite/
+     (must end with a /)
+     OG tags REQUIRE absolute URLs — relative paths won't work on
+     WhatsApp / Facebook / iMessage.
+     ============================================================ -->
+
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Wedding Invitation" />
 <meta property="og:title" content="Abhishek weds Shipra · Wedding Invitation" />
 <meta property="og:description" content="Save the Date — Tuesday, 5th May 2026 · AKM Resorts, Zirakpur. With blessings from the Modi family." />
-<meta property="og:image" content="preview.jpg" />
-<meta property="og:image:secure_url" content="preview.jpg" />
+<meta property="og:url" content="https://anshpreetsingh351.github.io/Wedding--Invitation/" />
+<meta property="og:image" content="https://anshpreetsingh351.github.io/Wedding--Invitation/preview.jpg" />
+<meta property="og:image:secure_url" content="https://anshpreetsingh351.github.io/Wedding--Invitation/preview.jpg" />
+<meta property="og:image:type" content="image/jpeg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="Abhishek weds Shipra — Wedding Invitation" />
@@ -25,7 +32,7 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Abhishek weds Shipra · Wedding Invitation" />
 <meta name="twitter:description" content="Save the Date — Tuesday, 5th May 2026 · AKM Resorts, Zirakpur" />
-<meta name="twitter:image" content="preview.jpg" />
+<meta name="twitter:image" content="https://anshpreetsingh351.github.io/Wedding--Invitation/preview.jpg" />
 
 <!-- Favicon (SVG inline - gold A&S monogram) -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%236b0f1a' stroke='%23c9a14a' stroke-width='2'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' font-style='italic' fill='%23c9a14a' text-anchor='middle' font-weight='600'%3EA%26amp;S%3C/text%3E%3C/svg%3E" />
@@ -62,34 +69,112 @@
   #curtain-intro{
     position:fixed;inset:0;
     z-index:9999;
-    background:#000;
+    background:#1a0308 url('poster.jpg') center/cover no-repeat;
     display:flex;align-items:center;justify-content:center;
     transition:opacity 1.2s ease-out;
+    overflow:hidden;
   }
   #curtain-video{
+    position:absolute;inset:0;
     width:100%;height:100%;
     object-fit:cover;
-    display:block;
+    display:none;
+    z-index:1;
   }
+  #curtain-video.playing{display:block}
   #curtain-intro.gone{opacity:0;pointer-events:none}
 
-  .tap-hint{
-    position:absolute;
-    bottom:24px;left:50%;transform:translateX(-50%);
-    color:rgba(255,230,180,.85);
-    font-family:'Cormorant Garamond',serif;
-    font-size:13px;letter-spacing:3px;text-transform:uppercase;
-    padding:10px 22px;
-    border:1px solid rgba(201,161,74,.5);
-    border-radius:40px;
-    background:rgba(0,0,0,.3);
-    backdrop-filter:blur(6px);
-    animation:pulse 2.2s ease-in-out infinite;
-    z-index:2;
+  /* Landing overlay - shown before user taps */
+  .landing-overlay{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    padding:24px;
+    text-align:center;
+    z-index:3;
+    background:radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,.45) 100%);
+    transition:opacity .6s ease, transform .6s ease;
   }
+  .landing-overlay.hidden{
+    opacity:0;pointer-events:none;transform:scale(1.1);
+  }
+
+  .landing-monogram{
+    width:100px;height:100px;
+    border:2px solid #c9a14a;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle, rgba(246,236,217,.95), rgba(232,220,192,.9));
+    box-shadow:
+      0 0 40px rgba(201,161,74,.6),
+      0 0 80px rgba(201,161,74,.3),
+      inset 0 2px 6px rgba(255,255,255,.7);
+    margin-bottom:28px;
+    animation:glow 2.5s ease-in-out infinite alternate;
+  }
+  .landing-monogram::before{
+    content:"";
+    position:absolute;
+    width:100px;height:100px;
+    border-radius:50%;
+    border:1px solid rgba(201,161,74,.5);
+    transform:scale(1.15);
+  }
+  .landing-monogram span{
+    font-family:'Allura',cursive;
+    font-size:48px;
+    color:#6b0f1a;
+    line-height:1;
+    letter-spacing:-4px;
+  }
+  @keyframes glow{
+    from{box-shadow:0 0 40px rgba(201,161,74,.6), 0 0 80px rgba(201,161,74,.3), inset 0 2px 6px rgba(255,255,255,.7)}
+    to  {box-shadow:0 0 60px rgba(201,161,74,.9), 0 0 120px rgba(201,161,74,.5), inset 0 2px 6px rgba(255,255,255,.7)}
+  }
+
+  .landing-invited{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:18px;
+    letter-spacing:2px;
+    color:#f6ecd9;
+    text-shadow:0 2px 10px rgba(0,0,0,.7);
+    margin-bottom:6px;
+    animation:fadeUp 1s .3s both;
+  }
+  .landing-names{
+    font-family:'Allura',cursive;
+    font-size:44px;
+    color:#ffd98a;
+    text-shadow:0 2px 20px rgba(0,0,0,.8), 0 0 30px rgba(201,161,74,.4);
+    line-height:1.05;
+    margin-bottom:38px;
+    animation:fadeUp 1s .5s both;
+  }
+
+  .tap-btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:16px 36px;
+    background:linear-gradient(145deg, #c9a14a, #8a6b2a);
+    color:#fff8e7;
+    font-family:'Marcellus',serif;
+    font-size:14px;letter-spacing:4px;text-transform:uppercase;
+    border:1.5px solid #e8c87a;
+    border-radius:50px;
+    cursor:pointer;
+    box-shadow:
+      0 8px 30px rgba(201,161,74,.5),
+      0 0 0 8px rgba(201,161,74,.15),
+      inset 0 1px 2px rgba(255,255,255,.3);
+    animation:pulse 2.2s ease-in-out infinite, fadeUp 1s .7s both;
+    transition:transform .2s;
+  }
+  .tap-btn:active{transform:scale(.96)}
+  .tap-btn::after{content:"→";font-size:18px;margin-left:4px}
+
   @keyframes pulse{
-    0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}
-    50%{opacity:1;transform:translateX(-50%) scale(1.04)}
+    0%,100%{box-shadow:0 8px 30px rgba(201,161,74,.5), 0 0 0 8px rgba(201,161,74,.15), inset 0 1px 2px rgba(255,255,255,.3)}
+    50%   {box-shadow:0 10px 40px rgba(201,161,74,.7), 0 0 0 14px rgba(201,161,74,.05), inset 0 1px 2px rgba(255,255,255,.3)}
   }
 
   /* ============ MAIN INVITATION ============ */
@@ -672,10 +757,16 @@
 
 <!-- ============ CURTAIN INTRO ============ -->
 <div id="curtain-intro">
-  <video id="curtain-video" muted playsinline autoplay preload="auto">
+  <video id="curtain-video" muted playsinline preload="auto" poster="poster.jpg">
     <source src="curtain.mp4" type="video/mp4">
   </video>
-  <div class="tap-hint" id="tapHint">Tap to open</div>
+
+  <div class="landing-overlay" id="landingOverlay">
+    <div class="landing-monogram"><span>A&amp;S</span></div>
+    <div class="landing-invited">~ You are cordially invited ~</div>
+    <div class="landing-names">Abhishek &amp; Shipra</div>
+    <button class="tap-btn" id="openBtn" type="button">Tap to Open</button>
+  </div>
 </div>
 
 <!-- ============ MAIN INVITATION ============ -->
@@ -848,7 +939,11 @@
   const intro   = document.getElementById('curtain-intro');
   const video   = document.getElementById('curtain-video');
   const invite  = document.getElementById('invitation');
-  const tapHint = document.getElementById('tapHint');
+  const overlay = document.getElementById('landingOverlay');
+  const openBtn = document.getElementById('openBtn');
+
+  // lock scroll until curtains open
+  document.body.style.overflow='hidden';
 
   let revealed = false;
   function revealInvite(){
@@ -856,36 +951,38 @@
     revealed = true;
     intro.classList.add('gone');
     invite.classList.add('visible');
-    setTimeout(()=>{ intro.remove(); }, 1300);
-    // remove landing lock
     document.body.style.overflow='auto';
+    setTimeout(()=>{ intro.remove(); }, 1300);
   }
 
-  // lock scroll until curtains open
-  document.body.style.overflow='hidden';
+  let started = false;
+  function startCurtain(){
+    if(started) return;
+    started = true;
+    // Hide the landing overlay
+    overlay.classList.add('hidden');
+    // Show and play the video
+    video.classList.add('playing');
+    const p = video.play();
+    if(p && p.catch){
+      p.catch(()=>{
+        // If it still fails (very rare after tap), reveal directly
+        setTimeout(revealInvite, 500);
+      });
+    }
+  }
 
-  // auto-reveal when video ends
+  // Open on tap (button OR anywhere on the screen after first tap)
+  openBtn.addEventListener('click', startCurtain);
+  openBtn.addEventListener('touchend', (e)=>{ e.preventDefault(); startCurtain(); }, {passive:false});
+
+  // After video plays through, reveal the invitation
   video.addEventListener('ended', revealInvite);
 
-  // allow tap to skip/open
-  intro.addEventListener('click', revealInvite);
-  intro.addEventListener('touchend', (e)=>{ e.preventDefault(); revealInvite(); }, {passive:false});
-
-  // fallback: if autoplay blocked, play on first interaction
-  const tryPlay = () => {
-    const p = video.play();
-    if(p && p.catch) p.catch(()=>{});
-  };
-  tryPlay();
-  document.addEventListener('touchstart', tryPlay, {once:true});
-  document.addEventListener('click', tryPlay, {once:true});
-
-  // safety fallback — if video fails to load in 3s, let user tap
-  setTimeout(()=>{
-    if(!revealed && video.readyState < 2){
-      tapHint.textContent = 'Tap to continue';
-    }
-  }, 3000);
+  // Also let tap skip the video once it's playing
+  intro.addEventListener('click', (e)=>{
+    if(started && !revealed) revealInvite();
+  });
 
   /* ============ SCRATCH TO REVEAL ============ */
   const canvas = document.getElementById('scratchCanvas');
