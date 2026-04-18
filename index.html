@@ -966,23 +966,21 @@
     const p = video.play();
     if(p && p.catch){
       p.catch(()=>{
-        // If it still fails (very rare after tap), reveal directly
+        // If playback fails, reveal invitation directly
         setTimeout(revealInvite, 500);
       });
     }
+    // AUTO-REVEAL the invitation once curtains are visually open (~5s)
+    // This removes the need for user to tap again after curtains open
+    setTimeout(revealInvite, 5200);
   }
 
-  // Open on tap (button OR anywhere on the screen after first tap)
+  // Open on tap
   openBtn.addEventListener('click', startCurtain);
   openBtn.addEventListener('touchend', (e)=>{ e.preventDefault(); startCurtain(); }, {passive:false});
 
-  // After video plays through, reveal the invitation
+  // Also fire reveal if the video ends early (in case of short video or browser quirk)
   video.addEventListener('ended', revealInvite);
-
-  // Also let tap skip the video once it's playing
-  intro.addEventListener('click', (e)=>{
-    if(started && !revealed) revealInvite();
-  });
 
   /* ============ SCRATCH TO REVEAL ============ */
   const canvas = document.getElementById('scratchCanvas');
