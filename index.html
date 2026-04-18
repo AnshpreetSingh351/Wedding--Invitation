@@ -961,8 +961,9 @@
     started = true;
     // Hide the landing overlay
     overlay.classList.add('hidden');
-    // Show and play the video
+    // Show and play the video at 2.8x speed → curtains open in ~1.8s
     video.classList.add('playing');
+    video.playbackRate = 2.8;
     const p = video.play();
     if(p && p.catch){
       p.catch(()=>{
@@ -970,9 +971,8 @@
         setTimeout(revealInvite, 500);
       });
     }
-    // AUTO-REVEAL the invitation once curtains are visually open (~5s)
-    // This removes the need for user to tap again after curtains open
-    setTimeout(revealInvite, 5200);
+    // AUTO-REVEAL the invitation once curtains are visually open (1.8s)
+    setTimeout(revealInvite, 1800);
   }
 
   // Open on tap
