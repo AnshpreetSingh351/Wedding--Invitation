@@ -177,6 +177,26 @@
     50%   {box-shadow:0 10px 40px rgba(201,161,74,.7), 0 0 0 14px rgba(201,161,74,.05), inset 0 1px 2px rgba(255,255,255,.3)}
   }
 
+  /* Music toggle button */
+  .music-toggle{
+    position:fixed;
+    bottom:20px;right:20px;
+    width:46px;height:46px;
+    border-radius:50%;
+    background:linear-gradient(145deg, #c9a14a, #8a6b2a);
+    border:1.5px solid #e8c87a;
+    color:#fff8e7;
+    display:none;
+    align-items:center;justify-content:center;
+    cursor:pointer;
+    z-index:500;
+    box-shadow:0 4px 16px rgba(107,15,26,.3), 0 0 0 4px rgba(201,161,74,.15);
+    transition:transform .2s;
+  }
+  .music-toggle.visible{display:flex}
+  .music-toggle:active{transform:scale(.92)}
+  .music-toggle svg{width:20px;height:20px;fill:#fff8e7}
+
   /* ============ MAIN INVITATION ============ */
   .invitation{
     opacity:0;
@@ -755,6 +775,17 @@
 </head>
 <body>
 
+<!-- ============ BACKGROUND MUSIC (plays on Tap to Open) ============ -->
+<audio id="weddingSong" preload="auto" loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Music on/off toggle (appears after invitation reveals) -->
+<button class="music-toggle" id="musicToggle" type="button" aria-label="Toggle music">
+  <svg id="musicIconOn" viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>
+  <svg id="musicIconOff" viewBox="0 0 24 24" style="display:none"><path d="M12 3v3.17L14 8.17V7h4V3h-6zM4.27 3L3 4.27l9 9v.28A4 4 0 1 0 14 17v-1.73L19.73 21 21 19.73 4.27 3z"/></svg>
+</button>
+
 <!-- ============ CURTAIN INTRO ============ -->
 <div id="curtain-intro">
   <video id="curtain-video" muted playsinline preload="auto" poster="poster.jpg">
@@ -835,12 +866,6 @@
         <span class="dot">❀</span>
         <span class="line"></span>
       </div>
-
-      <p class="blessings-label">With the Heavenly Blessings of</p>
-      <p class="ancestors">Late Smt. Maya Devi<br>&amp; Late Sh. Tarsem Modi</p>
-
-      <p class="parents">Smt. Usha &amp; Sh. Jiwan Modi</p>
-      <p class="request">solicit your benign presence on<br>the auspicious occasion of the<br>Wedding ceremony of their beloved son</p>
 
       <div class="couple-card-names">
         <div class="name">Abhishek</div>
@@ -941,6 +966,10 @@
   const invite  = document.getElementById('invitation');
   const overlay = document.getElementById('landingOverlay');
   const openBtn = document.getElementById('openBtn');
+  const song    = document.getElementById('weddingSong');
+  const musicBtn = document.getElementById('musicToggle');
+  const musicIconOn  = document.getElementById('musicIconOn');
+  const musicIconOff = document.getElementById('musicIconOff');
 
   // lock scroll until curtains open
   document.body.style.overflow='hidden';
@@ -951,6 +980,7 @@
     revealed = true;
     intro.classList.add('gone');
     invite.classList.add('visible');
+    musicBtn.classList.add('visible');
     document.body.style.overflow='auto';
     setTimeout(()=>{ intro.remove(); }, 1300);
   }
@@ -959,6 +989,14 @@
   function startCurtain(){
     if(started) return;
     started = true;
+
+    // Start the wedding song on user tap (user interaction = autoplay allowed)
+    song.volume = 0.55;
+    const songPromise = song.play();
+    if(songPromise && songPromise.catch){
+      songPromise.catch(()=>{ /* browser blocked — music button still works */ });
+    }
+
     // Hide the landing overlay
     overlay.classList.add('hidden');
     // Show and play the video at 2.8x speed → curtains open in ~1.8s
@@ -981,6 +1019,19 @@
 
   // Also fire reveal if the video ends early (in case of short video or browser quirk)
   video.addEventListener('ended', revealInvite);
+
+  /* ============ MUSIC TOGGLE ============ */
+  musicBtn.addEventListener('click', ()=>{
+    if(song.paused){
+      song.play().catch(()=>{});
+      musicIconOn.style.display = 'block';
+      musicIconOff.style.display = 'none';
+    } else {
+      song.pause();
+      musicIconOn.style.display = 'none';
+      musicIconOff.style.display = 'block';
+    }
+  });
 
   /* ============ SCRATCH TO REVEAL ============ */
   const canvas = document.getElementById('scratchCanvas');
